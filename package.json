@@ -1,0 +1,34 @@
+{
+  "name": "voice-sd",
+  "version": "0.0.1:alpha",
+  "main": "index.js",
+  "author": "cyace84@gmail.com",
+  "license": "MIT",
+  "scripts": {
+    "test": "ts-node src/speech/index.ts",
+    "export-credentials": "echo export GOOGLE_APPLICATION_CREDENTIALS=./src/speech/google-credentials.json",
+    "start": "yarn export-credentials && ts-node src/tgbot/index.ts"
+  },
+  "dependencies": {
+    "@banana-dev/banana-dev": "^4.0.0",
+    "@google-cloud/speech": "^5.3.0",
+    "@types/chai": "4.3.4",
+    "@types/mocha": "10.0.1",
+    "axios": "^1.3.4",
+    "child_process": "^1.0.2",
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.0",
+    "express": "^4.18.2",
+    "fetch": "^1.1.0",
+    "fs": "^0.0.1-security",
+    "openai": "^3.1.0",
+    "telegraf": "^4.11.2",
+    "translate-google": "^1.5.0",
+    "ts-node": "^10.2.1",
+    "typescript": "^4.4.3",
+    "uuid": "^9.0.0"
+  },
+  "devDependencies": {
+    "@types/node-fetch": "^2.6.2"
+  }
+}
