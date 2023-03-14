@@ -1,6 +1,6 @@
 {
   // Change this to match your project
-  "include": ["src/**/*"],
+  "include": ["index.ts", "src/**/*"],
   "compilerOptions": {
     // Tells TypeScript to read JS files, as
     // normally they are ignored as source files
@@ -16,9 +16,14 @@
     // next to the .js files
     "outDir": "dist",
     "lib": ["es2015"],
+    "target": "es6",
+    "moduleResolution": "node",
 
     "esModuleInterop": true,
 
-    "allowSyntheticDefaultImports": true
+    "allowSyntheticDefaultImports": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true
+    // "strictNullChecks": true
   }
 }

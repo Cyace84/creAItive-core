@@ -1,0 +1,16 @@
+{
+  "steps": 40,
+  "batchSize": 1,
+  "width": 512,
+  "height": 512,
+  "sdModelId": 3,
+  "samplerName": "Euler a",
+  "cfgScale": 7.5,
+  "seed": -1,
+  "nIter": "1",
+  "tiling": false,
+  "openAiModelId": 1,
+  "promptModelId": 1,
+  "temperature": 0.1,
+  "topP": null
+}

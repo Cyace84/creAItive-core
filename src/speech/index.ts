@@ -18,7 +18,7 @@ enum AudioEncoding {
 // Creates a client
 const client = new speech.SpeechClient();
 
-export async function voiceToText(
+async function voiceToText(
   audio: google.cloud.speech.v1.IRecognitionAudio,
   config: google.cloud.speech.v1.IRecognitionConfig = {
     encoding: AudioEncoding.OGG_OPUS,
@@ -38,3 +38,5 @@ export async function voiceToText(
 
   return transcription;
 }
+
+export { voiceToText };

@@ -1,11 +1,5 @@
-import axios from "axios";
-import { spawn } from "child_process";
-import {
-  TextToImageParams,
-  TextToImageRequest,
-  TextToImageResponse,
-} from "./types";
-import banana from "@banana-dev/banana-dev";
+import { SDTypes } from './types';
+const banana = require('@banana-dev/banana-dev');
 
 export class SD {
   apiKey: string;
@@ -14,13 +8,12 @@ export class SD {
     this.apiKey = apiKey;
   }
 
-  async getTextToImage(
-    request: TextToImageParams,
-    modelKey: string,
-  ): Promise<TextToImageResponse> {
-    return (await banana.run(this.apiKey, modelKey, {
-      enpoint: "tx",
-      params: request,
-    })) as TextToImageResponse;
+  async getTextToImage(request: SDTypes.TextToImageParams, modelKey: string): Promise<SDTypes.TextToImageResponse> {
+    const response = await banana.run(this.apiKey, modelKey, {
+      endpoint: 'txt2img',
+      params: request
+    });
+
+    return response.modelOutputs[0];
   }
 }

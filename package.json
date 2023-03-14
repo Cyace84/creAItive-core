@@ -1,34 +1,51 @@
 {
-  "name": "voice-sd",
-  "version": "0.0.1:alpha",
-  "main": "index.js",
+  "name": "creataive-core",
+  "version": "0.0.2:alpha",
+  "main": "index.ts",
   "author": "cyace84@gmail.com",
   "license": "MIT",
   "scripts": {
     "test": "ts-node src/speech/index.ts",
     "export-credentials": "echo export GOOGLE_APPLICATION_CREDENTIALS=./src/speech/google-credentials.json",
-    "start": "yarn export-credentials && ts-node src/tgbot/index.ts"
+    "start": "ts-node ./index.ts",
+    "init-default-entity": "ts-node ./scripts/init-database.ts"
   },
   "dependencies": {
     "@banana-dev/banana-dev": "^4.0.0",
     "@google-cloud/speech": "^5.3.0",
     "@types/chai": "4.3.4",
     "@types/mocha": "10.0.1",
-    "axios": "^1.3.4",
+    "@types/pg": "8.6.6",
+    "body-parser": "^1.20.2",
     "child_process": "^1.0.2",
     "cors": "^2.8.5",
     "dotenv": "^16.0.0",
     "express": "^4.18.2",
+    "express-session": "^1.17.3",
     "fetch": "^1.1.0",
     "fs": "^0.0.1-security",
+    "jsonwebtoken": "^9.0.0",
+    "multer": "^1.4.5-lts.1",
     "openai": "^3.1.0",
-    "telegraf": "^4.11.2",
+    "passport": "^0.6.0",
+    "passport-google-oauth20": "^2.0.0",
+    "pg": "^8.9.0",
+    "reflect-metadata": "^0.1.13",
     "translate-google": "^1.5.0",
     "ts-node": "^10.2.1",
-    "typescript": "^4.4.3",
-    "uuid": "^9.0.0"
+    "typeorm": "^0.3.12",
+    "uuid": "^9.0.0",
+    "ioredis": "^5.3.1",
+    "redis": "^4.6.5",
+    "node-cron": "^3.0.2"
   },
   "devDependencies": {
-    "@types/node-fetch": "^2.6.2"
+    "@types/body-parser": "^1.19.2",
+    "@types/cors": "^2.8.13",
+    "@types/express": "^4.17.17",
+    "@types/multer": "^1.4.7",
+    "@types/node": "^18.14.2",
+    "@types/node-fetch": "^2.6.2",
+    "typescript": "^4.9.5"
   }
 }
