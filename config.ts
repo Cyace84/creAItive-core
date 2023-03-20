@@ -24,6 +24,8 @@ export interface Config {
   REDIS_OPTIONS: {
     host: string;
     port?: number;
+    password?: string;
+    username?: string;
     tls?: { rejectUnauthorized: boolean };
   } | null;
 }
@@ -50,9 +52,11 @@ export function getConfig(): Config {
     process.env.NODE_ENV === "local"
       ? null
       : {
-          host: process.env.REDIS_HOST!,
-          port: parseInt(process.env.REDIS_PORT!),
-          tls: { rejectUnauthorized: false },
+          host: "redis-11394.c250.eu-central-1-1.ec2.cloud.redislabs.com",
+          port: 11394,
+          password: "Valikcwalk$24",
+          username: "cyace84",
+          //tls: { rejectUnauthorized: false },
         };
 
   return {

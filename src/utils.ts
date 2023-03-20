@@ -33,7 +33,7 @@ export function decryptModelKey(
 
 export const getSDModelKey = async (modelId: number): Promise<string> => {
   const sdModels = await cache.get("stableDiffusionModels");
- 
+  console.log("sdModels", sdModels)
   const modelKey = sdModels.find( (model: any) => model.id === modelId).modelKey;
   if (modelKey) {
     return modelKey;

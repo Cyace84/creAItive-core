@@ -59,11 +59,16 @@ export async function txtToImg(
       gptRequest,
     );
 
+    const fortmatInfo = response.info.replace(/,(?!\s)/g, ", ");
+
     const newGeneration = new Generation();
+    const users = await cache.get("users");
+    const user = users.find(user => user.email === req.user?.email);
+
     newGeneration.sourceText = response.prompt_parameters.transcripted_voice;
     newGeneration.gptRequest = gptRequest;
     newGeneration.images64 = sdResponse.images;
-    newGeneration.info = response.info;
+    newGeneration.info = JSON.parse(JSON.parse(fortmatInfo));
     newGeneration.modelSdId = req.txt2ImgRequest.params.model_id;
     newGeneration.promptParameters = {
       transcriptedVoice: response.prompt_parameters.transcripted_voice,
@@ -72,7 +77,7 @@ export async function txtToImg(
       promptModel: response.prompt_parameters.prompt_model,
       temperature: req.txt2ImgRequest.prompt_params.temperature,
     };
-    newGeneration.userId = req.user?.id;
+    newGeneration.userId = user.id;
 
     // const inewGeneration: IGeneration = {
     //   sourceText: response.prompt_parameters.transcripted_voice,
@@ -89,17 +94,34 @@ export async function txtToImg(
     //   userId: req.user?.id
     // };
 
-    await cache.addGeneration(newGeneration);
-
     const savedGeneration = await AppDataSource.manager.save(
       Generation,
       newGeneration,
     );
+    await cache.addGeneration(newGeneration);
+
     response.id = savedGeneration.id.toString();
 
     res.txt2ImgResponse = newGeneration;
     res.status(200);
-    res.json(response);
+    res.json(newGeneration);
+  } catch (error) {
+    next(error);
+  }
+}
+
+export async function transcriptVoice(
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) {
+  try {
+    const audio = {
+      content: req.file?.buffer.toString("base64"),
+    };
+    const transcription = await voiceToText(audio);
+    res.status(200);
+    res.json({ transcription });
   } catch (error) {
     next(error);
   }

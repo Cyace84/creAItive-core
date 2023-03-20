@@ -30,6 +30,6 @@ export const AppDataSource = new DataSource({
     Role,
     Limit,
   ],
-  migrations: [],
+  migrations: ["migrations/*.js"],
   subscribers: [],
 });

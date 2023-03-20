@@ -6,10 +6,13 @@
   "license": "MIT",
   "scripts": {
     "test": "ts-node src/speech/index.ts",
-    "export-credentials": "echo export GOOGLE_APPLICATION_CREDENTIALS=./src/speech/google-credentials.json",
-    "start": "ts-node ./index.ts",
-    "init-default-entity": "ts-node ./scripts/init-database.ts"
+    "export-credentials": "export GOOGLE_APPLICATION_CREDENTIALS=./src/speech/google-credentials.json",
+    "start": "yarn export-credentials && ts-node ./index.ts",
+    "init-default-entity": "ts-node ./scripts/init-database.ts",
+    "update-sd-models": "ts-node ./scripts/update-sd-models.ts",
+    "migrate": "typeorm migration:run"
   },
+  "prettier": "./prettierrc.json",
   "dependencies": {
     "@banana-dev/banana-dev": "^4.0.0",
     "@google-cloud/speech": "^5.3.0",
@@ -46,6 +49,7 @@
     "@types/multer": "^1.4.7",
     "@types/node": "^18.14.2",
     "@types/node-fetch": "^2.6.2",
-    "typescript": "^4.9.5"
+    "typescript": "^4.9.5",
+    "prettier": "^2.8.4"
   }
 }

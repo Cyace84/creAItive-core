@@ -21,7 +21,7 @@ const client = new speech.SpeechClient();
 async function voiceToText(
   audio: google.cloud.speech.v1.IRecognitionAudio,
   config: google.cloud.speech.v1.IRecognitionConfig = {
-    encoding: AudioEncoding.OGG_OPUS,
+    encoding: AudioEncoding.LINEAR16,
     sampleRateHertz: 48000,
     languageCode: "ru-RU",
   },

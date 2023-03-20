@@ -33,7 +33,7 @@ import { checkLimitsMiddleware } from "./src/api/middleware/checks";
 import { updateDatabase } from "./src/task";
 import { getUser } from "./src/api/v1/handlers/get";
 import { getRouterV1, txt2imgRouterV1 } from "./src/api/v1/routers";
-import { authFront } from "./src/api/v1/handlers";
+import { authFront, transcriptVoice } from "./src/api/v1/handlers";
 
 export const cache = Cache.getInstance(config.REDIS_OPTIONS);
 const db = AppDataSource;
@@ -86,6 +86,8 @@ app.use(
 
 app.use("/api/v1/get/", authMiddleware.authenticateToken, getRouterV1);
 
+app.use("/api/voice-to-text", upload.single("file"), transcriptVoice);
+
 app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
   console.error(err.stack);
   res.status(500).send(`Internal Server Error: ${err.message}`);
@@ -132,6 +134,9 @@ if (require.main === module) {
         "stableDiffusionModels",
         JSON.stringify(stableDiffusionModels),
       );
+
+      const defaults = require("./src/defaults.json");
+      await cache.set("defaults", JSON.stringify(defaults));
 
       console.log("Cache is ready.");
 

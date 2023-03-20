@@ -1,7 +1,13 @@
-import { Entity, PrimaryGeneratedColumn, Column } from "typeorm";
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  ObjectIdColumn,
+} from "typeorm";
 
 @Entity()
 export class PromptModel {
+  @ObjectIdColumn()
   @PrimaryGeneratedColumn()
   id: number;
 

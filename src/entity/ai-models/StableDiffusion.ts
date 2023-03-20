@@ -1,7 +1,13 @@
-import { Entity, Column, PrimaryGeneratedColumn } from "typeorm";
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  ObjectIdColumn,
+} from "typeorm";
 
 @Entity()
 export class StableDiffusion {
+  @ObjectIdColumn()
   @PrimaryGeneratedColumn()
   id: number;
 
