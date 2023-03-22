@@ -21,11 +21,9 @@ export async function txtToImg(
     const promptParams = req.txt2ImgRequest.prompt_params;
     let transcription = req.txt2ImgRequest.text;
     if (req.file) {
-      const audio = {
-        content: req.file?.buffer.toString("base64"),
-      };
-      transcription = await voiceToText(audio);
+      transcription = await voiceToText(req.file.buffer);
     }
+
     const { prompt, negativePrompt, data, gptRequest } =
       await promptAI.generatePrompt(transcription);
 
@@ -116,10 +114,8 @@ export async function transcriptVoice(
   next: NextFunction,
 ) {
   try {
-    const audio = {
-      content: req.file?.buffer.toString("base64"),
-    };
-    const transcription = await voiceToText(audio);
+    const transcription = await voiceToText(req.file.buffer);
+    console.log(321312, transcription);
     res.status(200);
     res.json({ transcription });
   } catch (error) {

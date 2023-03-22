@@ -18,14 +18,18 @@ enum AudioEncoding {
 // Creates a client
 const client = new speech.SpeechClient();
 
-async function voiceToText(
-  audio: google.cloud.speech.v1.IRecognitionAudio,
+export async function voiceToText(
+  audioBuffer: Buffer,
   config: google.cloud.speech.v1.IRecognitionConfig = {
-    encoding: AudioEncoding.LINEAR16,
+    encoding: AudioEncoding.WEBM_OPUS,
     sampleRateHertz: 48000,
     languageCode: "ru-RU",
   },
 ) {
+  const audio = {
+    content: audioBuffer.toString("base64"),
+  };
+
   const request = {
     audio: audio,
     config: config,
@@ -38,5 +42,3 @@ async function voiceToText(
 
   return transcription;
 }
-
-export { voiceToText };

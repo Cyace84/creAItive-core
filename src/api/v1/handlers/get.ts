@@ -14,7 +14,6 @@ export async function getGenerations(
     const userGenerations = await generations.filter(
       (generation: Generation) => generation.userId === req.user.id,
     );
-    console.log("generation: ", userGenerations);
     res.send(userGenerations);
   } catch (err) {
     console.error(err);
