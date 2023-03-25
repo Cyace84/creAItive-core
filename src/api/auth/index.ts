@@ -58,12 +58,16 @@ authRouter.get(
     };
 
     const callbackUrl = await cache.get("callbackURL");
+    const defaults = await cache.get("defaults");
+    const sdModels = await cache.get("stableDiffusionModels");
 
     if (callbackUrl) {
       const params = new URLSearchParams({
         accessToken: accessToken,
         expiresLn: expiresLn.toString(),
         user: JSON.stringify(user),
+        defaults: JSON.stringify(defaults),
+        sdModels: JSON.stringify(sdModels),
       });
       res.redirect(`${callbackUrl}?${params}`);
     } else {
