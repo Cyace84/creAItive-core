@@ -21,6 +21,7 @@ export namespace APITypes {
   export type PromptParams = {
     model_ai?: string;
     prompt_model?: string;
+    prompt_context?: string;
     temperature?: number;
     top_p?: number;
   };

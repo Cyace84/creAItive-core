@@ -40,6 +40,7 @@ const checkTextToImageDataMiddleware: RequestHandler = async (
   let {
     model_ai = defaults.openAiModelId,
     prompt_model = defaults.promptModelId,
+    prompt_context = defaults.promptContext,
     temperature = req.txt2ImgRequest.prompt_params.temperature ||
       defaults.temperature,
     top_p = req.txt2ImgRequest.prompt_params.top_p || defaults.topP,
@@ -67,6 +68,7 @@ const checkTextToImageDataMiddleware: RequestHandler = async (
     ...req.txt2ImgRequest.prompt_params,
     model_ai,
     prompt_model,
+    prompt_context,
     temperature,
     top_p,
   };

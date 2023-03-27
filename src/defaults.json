@@ -12,5 +12,6 @@
   "openAiModelId": 1,
   "promptModelId": 1,
   "temperature": 0.1,
-  "topP": null
+  "topP": null,
+  "promptContext": ""
 }

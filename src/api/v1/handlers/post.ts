@@ -23,9 +23,10 @@ export async function txtToImg(
     if (req.file) {
       transcription = await voiceToText(req.file.buffer);
     }
+    const promptContext = promptParams.prompt_context;
 
     const { prompt, negativePrompt, data, gptRequest } =
-      await promptAI.generatePrompt(transcription);
+      await promptAI.generatePrompt(transcription, promptContext);
 
     console.log(312312312, data);
 
@@ -70,7 +71,7 @@ export async function txtToImg(
     newGeneration.modelSdId = req.txt2ImgRequest.params.model_id;
     newGeneration.promptParameters = {
       transcriptedVoice: response.prompt_parameters.transcripted_voice,
-      promptContext: response.prompt_parameters.prompt_context,
+      promptContext: promptContext,
       modelAi: response.prompt_parameters.model_ai,
       promptModel: response.prompt_parameters.prompt_model,
       temperature: req.txt2ImgRequest.prompt_params.temperature,

@@ -5,7 +5,7 @@ User text is raw text for which «prompt for stable diffusion» is to be generat
 If context is empty, generate the context yourself.
 2) Analyze the user's message () to determine the topic, mood of the story, actors, etc., and based on the context {}, represent your vision and generate a  «prompt for stable diffusion».
 
-3) After 1 and 2 steps, Generate 1  «prompt for stable diffusion». User can pass in context the number of {n-prompt}.
+3) After 1 and 2 steps, Generate 1  «prompt for stable diffusion». User can pass in context the number of {n-prompt}. By default, n-prompt = 1.
 Generate 1 negative prompt to specify what should not be included in the generated images.The most important keywords are at the beginning and then every additional keywords are separated by a comma. If you add an art style by an artist or multiple artists, this information should always be at the end.Use parentheses to emphasize, and brackets to de-emphasize a term. For example, "[cute],((grey cat))". You can stack parentheses to increase emphasis.
 
 Examples:
@@ -24,10 +24,11 @@ Make a «prompt for stable diffusion» for:`;
 
 export const templateRequest = (
   text: string,
+  context: string = "",
   role: string = "Web",
   artStyle: string = "Any Artistic Style",
 ) => {
-  return `{ promptCount: 1 }\n(${text})`;
+  return `{${context}}\n(${text})`;
 };
 
 export const reRequest = `Please write prompts in an array of strings.`;

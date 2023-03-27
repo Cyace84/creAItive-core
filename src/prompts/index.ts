@@ -12,8 +12,11 @@ export class PromptAI {
     this.api = new OpenAIApi(new Configuration({ apiKey: openAiKey }));
   }
 
-  async generatePrompt(rawText: string, conversationId?: string) {
-    const gptRequest = `${DEFAULT_MODEL}\n\n${templateRequest(rawText)}`;
+  async generatePrompt(rawText: string, context: string) {
+    const gptRequest = `${DEFAULT_MODEL}\n\n${templateRequest(
+      rawText,
+      context,
+    )}`;
     const completionRequest: CreateCompletionRequest = {
       model: "text-davinci-003",
       max_tokens: 500,
@@ -31,7 +34,7 @@ export class PromptAI {
       if (this.errors > 0) {
         throw new Error(`Too many gpt requests failed.\n\n${sdPromptResponse}`);
       }
-      return await this.generatePrompt(rawText);
+      return await this.generatePrompt(rawText, context);
     }
     const data = gptResponse.data;
 
