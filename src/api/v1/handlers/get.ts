@@ -46,22 +46,27 @@ export async function getGeneration(
 }
 
 export async function getUser(req: Request, res: Response, next: NextFunction) {
-  const user = req.user;
-  const sdModels = await cache.get("stableDiffusionModels");
-  const promptModels = await cache.get("promptModels");
-  const openAImodels = await cache.get("openAImodels");
-  const defaults = await cache.get("defaults");
-  const response = {
-    stableDiffusionModels: sdModels,
-    promptModels: promptModels,
-    openAImodels: openAImodels,
-    defaults: defaults,
-    user: user,
-  };
+  try {
+    const user = req.user;
+    const sdModels = await cache.get("stableDiffusionModels");
+    const promptModels = await cache.get("promptModels");
+    const openAImodels = await cache.get("openAImodels");
+    const defaults = await cache.get("defaults");
+    const response = {
+      stableDiffusionModels: sdModels,
+      promptModels: promptModels,
+      openAImodels: openAImodels,
+      defaults: defaults,
+      user: user,
+    };
 
-  if (!user) {
-    res.status(401).json({ message: "Unauthorized" });
-  } else {
-    res.json(response);
+    if (!user) {
+      res.status(401).json({ message: "Unauthorized" });
+    } else {
+      res.json(response);
+    }
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Internal server error");
   }
 }
