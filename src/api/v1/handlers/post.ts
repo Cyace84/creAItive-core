@@ -32,8 +32,6 @@ export async function txtToImg(
         promptParams.temperature,
       );
 
-    //console.log(312312312, data);
-
     const sd = new SD(config.BANANA_API_KEY!);
     const sdRequest: SDTypes.TextToImageParams = {
       prompt: prompt,
@@ -49,61 +47,64 @@ export async function txtToImg(
       tiling: params.tiling,
     };
 
-    const respone = async () => {
-      const sdResponse = await sd.getTextToImage(
-        sdRequest,
-        await getSDModelKey(req.txt2ImgRequest.params.model_id),
-      );
-      const response: APITypes.TextToImageResponse = makeTxt2ImgResponse(
-        sdResponse.images,
-        sdResponse.info,
-        promptParams,
-        transcription,
-        gptRequest,
-      );
+    const respone = async (retryCount: number = 0) => {
+      try {
+        const sdResponse = await sd.getTextToImage(
+          sdRequest,
+          await getSDModelKey(req.txt2ImgRequest.params.model_id),
+        );
+        const response: APITypes.TextToImageResponse = makeTxt2ImgResponse(
+          sdResponse.images,
+          sdResponse.info,
+          promptParams,
+          transcription,
+          gptRequest,
+        );
 
-      const fortmatInfo = response.info.replace(/,(?!\s)/g, ", ");
+        const fortmatInfo = response.info.replace(/,(?!\s)/g, ", ");
 
-      const newGeneration = new Generation();
-      const users = await cache.get("users");
-      const user = users.find(user => user.email === req.user?.email);
+        const newGeneration = new Generation();
+        const users = await cache.get("users");
+        const user = users.find(user => user.email === req.user?.email);
 
-      newGeneration.sourceText = response.prompt_parameters.transcripted_voice;
-      newGeneration.gptRequest = gptRequest;
-      newGeneration.images64 = sdResponse.images;
-      newGeneration.info = JSON.parse(JSON.parse(fortmatInfo));
-      newGeneration.modelSdId = req.txt2ImgRequest.params.model_id;
-      newGeneration.promptParameters = {
-        transcriptedVoice: response.prompt_parameters.transcripted_voice,
-        promptContext: promptContext,
-        modelAi: response.prompt_parameters.model_ai,
-        promptModel: response.prompt_parameters.prompt_model,
-        temperature: req.txt2ImgRequest.prompt_params.temperature,
-      };
-      newGeneration.userId = user.id;
+        newGeneration.sourceText =
+          response.prompt_parameters.transcripted_voice;
+        newGeneration.gptRequest = gptRequest;
+        newGeneration.images64 = sdResponse.images;
+        newGeneration.info = JSON.parse(JSON.parse(fortmatInfo));
+        newGeneration.modelSdId = req.txt2ImgRequest.params.model_id;
+        newGeneration.promptParameters = {
+          transcriptedVoice: response.prompt_parameters.transcripted_voice,
+          promptContext: promptContext,
+          modelAi: response.prompt_parameters.model_ai,
+          promptModel: response.prompt_parameters.prompt_model,
+          temperature: req.txt2ImgRequest.prompt_params.temperature,
+        };
+        newGeneration.userId = user.id;
 
-      const savedGeneration = await AppDataSource.manager.save(
-        Generation,
-        newGeneration,
-      );
-      await cache.addGeneration(newGeneration);
+        const savedGeneration = await AppDataSource.manager.save(
+          Generation,
+          newGeneration,
+        );
+        await cache.addGeneration(newGeneration);
 
-      response.id = savedGeneration.id.toString();
+        response.id = savedGeneration.id.toString();
 
-      res.txt2ImgResponse = newGeneration;
-      res.status(200);
-      res.json(newGeneration);
-    };
-    let tries = 0;
-    try {
-      tries++;
-      await respone();
-    } catch (error) {
-      if (tries < 9) {
-        throw `The maximum number of attempts to create images has reached (${tries}): ${error}`;
+        res.txt2ImgResponse = newGeneration;
+        res.status(200);
+        res.json(newGeneration);
+      } catch (error) {
+        if (retryCount < 9) {
+          await respone(retryCount + 1);
+        } else {
+          throw `The maximum number of attempts to create images has reached (${
+            retryCount + 1
+          }): ${error}`;
+        }
       }
-      await respone();
-    }
+    };
+
+    await respone();
   } catch (error) {
     next(error);
   }

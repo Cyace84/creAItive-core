@@ -11,7 +11,7 @@ export async function authFront(
 ) {
   const callbackURL = req.query.callbackUrl as string;
   if (!callbackURL) {
-    res.status(400).send("Missing callback URL");
+    return res.status(400).send("Missing callback URL");
   }
 
   await cache.set("callbackURL", JSON.stringify(callbackURL));
