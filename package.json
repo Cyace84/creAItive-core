@@ -2,8 +2,8 @@
   "name": "creataive-core",
   "version": "0.0.2:alpha",
   "main": "index.ts",
-  "author": "cyace84@gmail.com",
-  "license": "MIT",
+  "author": "Valentyn Zavizion | cyace84@gmail.com",
+  "license": "AGPL-3.0",
   "scripts": {
     "test": "ts-node src/speech/index.ts",
     "export-credentials": "export GOOGLE_APPLICATION_CREDENTIALS=./src/speech/google-credentials.json",
