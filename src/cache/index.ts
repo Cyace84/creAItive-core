@@ -94,4 +94,10 @@ export class Cache {
     const user = users.find((u: User) => u.email === email);
     return user;
   }
+
+  public async removeKey(key: string) {
+    const redis = new Redis(this.options);
+    await redis.del(key);
+    redis.disconnect();
+  }
 }

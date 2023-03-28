@@ -69,6 +69,7 @@ authRouter.get(
         defaults: JSON.stringify(defaults),
         sdModels: JSON.stringify(sdModels),
       });
+      await cache.removeKey("callbackURL");
       res.redirect(`${callbackUrl}?${params}`);
     } else {
       res.json({ accessToken, expiresLn, user });

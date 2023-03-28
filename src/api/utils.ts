@@ -57,8 +57,8 @@ export const registerUser = async (
   }
 
   await AppDataSource.manager.upsert(User, user, {
-    skipUpdateIfNoValuesChanged: true, // If true, postgres will skip the update if no values would be changed (reduces writes)
-    conflictPaths: ["email"], // column(s) name that you would like to ON CONFLICT
+    skipUpdateIfNoValuesChanged: true,
+    conflictPaths: ["email"],
   });
   await cache.updateOrAddUser(user);
 
