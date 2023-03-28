@@ -89,8 +89,10 @@ app.use("/api/v1/get/", authMiddleware.authenticateToken, getRouterV1);
 app.use("/api/voice-to-text", upload.single("file"), transcriptVoice);
 
 app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
-  console.error(err.stack);
-  res.status(500).send(`Internal Server Error: ${err.message}`);
+  res
+    .status(500)
+    .json({ error: `Internal Server Error: ${err.message}` })
+    .send(`Internal Server Error: ${err.message}`);
 });
 
 if (require.main === module) {
@@ -98,7 +100,7 @@ if (require.main === module) {
     .then(async () => {
       console.log("Loading users from the database...");
       const users = await AppDataSource.manager.find(User);
-      console.log("Loaded users: ", Object.keys(users).length);
+      console.log("Loaded users: ", users, Object.keys(users).length);
 
       await cache.set("users", JSON.stringify(users));
 
